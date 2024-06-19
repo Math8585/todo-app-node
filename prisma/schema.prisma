@@ -21,13 +21,16 @@ model Todo {
   completed  Boolean
   categoryId Int
   category   Category @relation(fields: [categoryId], references: [id])
+  userId      Int?
+  user   User?     @relation(fields: [userId], references: [id])
 }
 
 model User {
   id         Int       @id @default(autoincrement())
-  firstName   String?
+  firstName  String?
   lastName   String?
   email      String    @unique
   password   String
   categories Category[]
+  todos      Todo[]
 }

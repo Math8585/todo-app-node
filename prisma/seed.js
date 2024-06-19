@@ -1,4 +1,4 @@
-const { PrismaClient } = require('@prisma/client');
+import { PrismaClient } from '@prisma/client';
 
 const todos = [
   { title: 'write book', completed: false, category: 'work' },
@@ -51,6 +51,9 @@ async function main() {
         completed: todo.completed,
         category: {
           connect: { id: createdCategories[todo.category] },
+        },
+        user: {
+          connect: { id: user.id },
         },
       },
     });

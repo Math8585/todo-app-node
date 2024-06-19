@@ -6,12 +6,16 @@ const options = {
   secretOrKey: process.env.SECRET_KEY,
 };
 
-export default (passport) => {
+export default passport => {
   passport.use(
     new JwtStrategy(options, async (payload, done) => {
       try {
         const user = await prisma.user.findUnique({
           where: { id: payload.userId },
+          select: {
+            id: true,
+            email: true,
+          },
         });
 
         if (user) {
@@ -23,6 +27,6 @@ export default (passport) => {
         console.error('Error in authenticateToken:', error);
         return done(error, false);
       }
-    })
+    }),
   );
 };
