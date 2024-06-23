@@ -20,9 +20,9 @@ authenticateToken(passport);
 
 app.use('/api/auth', authRouter);
 
-app.use('/todos', todosRouter);
+app.use('/api/todos', todosRouter);
 
-app.use('/category', categoryRouter);
+app.use('/api/category', categoryRouter);
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);

@@ -69,7 +69,7 @@ const update = async (req, res) => {
   const categoryId = req.params.id;
   const { name } = req.body;
   try {
-     await prisma.todo.update({
+    const newCategory = await prisma.category.update({
       where: {
         id: parseInt(categoryId),
       },
@@ -77,7 +77,8 @@ const update = async (req, res) => {
       data: {
         name,
       },
-    });
+     });
+     res.status(201).json(newCategory);
   } catch (error) {
     console.log(error);
   }

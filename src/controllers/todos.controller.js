@@ -59,7 +59,7 @@ const update = async (req, res) => {
   const todoId = req.params.id;
   const { title, completed } = req.body;
   try {
-   await prisma.todo.update({
+    const newTodo = await prisma.todo.update({
       where: {
         id: parseInt(todoId),
       },
@@ -68,7 +68,8 @@ const update = async (req, res) => {
         title,
         completed,
       },
-    });
+   });
+   res.status(201).json(newTodo);
   } catch (error) {
     console.log(error);
   }
