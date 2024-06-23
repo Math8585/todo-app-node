@@ -13,11 +13,14 @@ const app = express();
 
 app.use(express.json());
 
-const corsOptions = {
-  origin: ['http://localhost:4200', 'https://math8585.github.io'],
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization']
-};
+app.use(
+  cors({
+    origin: ['https://math8585.github.io', 'http://localhost:4200'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+  }),
+);
+
 
 app.use(passport.initialize());
 authenticateToken(passport);
