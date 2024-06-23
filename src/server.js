@@ -13,7 +13,7 @@ const app = express();
 
 app.use(express.json());
 
-app.use(cors({ origins: ['http://localhost:4200'] }));
+app.use(cors({ origins: ['http://localhost:4200', 'https://math8585.github.io/'] }));
 
 app.use(passport.initialize());
 authenticateToken(passport);
