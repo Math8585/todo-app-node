@@ -48,17 +48,18 @@ const create = async (req, res) => {
 const remove = async (req, res) => {
   const categoryId = req.params.id;
   try {
-    await prisma.category.delete({
-      where: {
-        id: parseInt(categoryId),
-      },
-    });
 
     await prisma.todo.deleteMany({
       where: {
         categoryId: parseInt(categoryId),
       },
     })
+
+    await prisma.category.delete({
+      where: {
+        id: parseInt(categoryId),
+      },
+    });
     res.status(200).json({ message: 'Category deleted successfully' });
   } catch (error) {
     console.log(error);

@@ -2,24 +2,31 @@ import prisma from '../db.js';
 
 const getByCategoryId = async (req, res) => {
   const categoryId = req.params.categoryId;
-  const search = req.query.search || '';
+  const currentPage = +req.query.page;
+  const pageSize = +req.query.pagesize;
 
   try {
-    const todos = await prisma.todo.findMany({
-      skip: parseInt(req.query.skip) || 0,
-      take: parseInt(req.query.take) || 10,
-      where: {
-        categoryId: parseInt(categoryId),
-        userId: req.user.id,
-        title: {
-          contains: search,
-          mode: 'insensitive',
+    const [todos, total] = await Promise.all([
+      prisma.todo.findMany({
+        skip: pageSize * (currentPage - 1),
+        take: pageSize,
+        where: {
+          categoryId: parseInt(categoryId),
+          userId: req.user.id,
         },
-      },
-    });
-    res.status(200).json(todos);
+      }),
+      prisma.todo.count({
+        where: {
+          categoryId: parseInt(categoryId),
+          userId: req.user.id,
+        },
+      }),
+    ]);
+
+    res.status(200).json({ todos, total });
   } catch (error) {
-    console.log(error);
+    console.error("Error fetching todos:", error);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 };
 
